@@ -36,6 +36,7 @@ def main(gatewayIP, victimIP):
 
     print("gatewayMAC:", gatewayMAC)
     print("gatewayIP:", gatewayIP)
+    print("=============================")
 
     if victimMAC == None or gatewayMAC == None:
         print("Cannot find MAC address")
