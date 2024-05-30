@@ -46,7 +46,6 @@ def main(gatewayIP, victimIP):
         restoreARP(victimIP, gatewayIP, victimMAC, gatewayMAC)
         print("terminated Spoofing -> RESTORED ARP TABLE")
 
-
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("Usage: python arp.py {client IP address} {gateway IP address}")
