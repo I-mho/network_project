@@ -48,7 +48,7 @@ def main(gatewayIP, victimIP):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("Usage: python arp.py {client IP address} {gateway IP address}")
+        print("Usage: python3 arp.py {client IP address} {gateway IP address}")
         exit()
     victimIP = sys.argv[1]
     gatewayIP = sys.argv[2]
