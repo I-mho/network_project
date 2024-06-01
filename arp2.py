@@ -11,11 +11,14 @@ from scapy.layers.l2 import Ether, ARP
 import sys
 import os
 
+# 특정 IP 주소의 MAC 주소 추출
 def getMAC(ip):
+    # Ethernet 프레임을 사용하여 ARP 요청을 브로드캐스트로 전송하여 IP 주소의 MAC 주소를 요청함
     ans, unans = srp(Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=ip), timeout=5, retry=3, verbose=False)
 
     print("ans:", ans)
     if ans:
+        # 응답이 있으면 MAC 주소 반환
         return ans[0][1].src
 
 def ARPspoof(srcIP, targetIP, targetMAC):
